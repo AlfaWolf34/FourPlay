@@ -28,6 +28,7 @@ const logout = () => {
       <v-spacer></v-spacer>
 
       <v-btn variant="text" to="/">Inicio</v-btn>
+      <v-btn variant="text" to="/mis-reservaciones">Mis Reservaciones</v-btn>
       <v-btn variant="text" to="/nosotros">Nosotros</v-btn>
       <v-btn variant="text" to="/contacto">Contacto</v-btn>
 

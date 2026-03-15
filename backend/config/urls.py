@@ -29,7 +29,7 @@ from rest_framework_simplejwt.views import (
 
 router = DefaultRouter()
 router.register('fields', FieldViewSet)
-router.register('bookings', BookingViewSet)
+router.register('bookings', BookingViewSet, basename='booking')
 router.register('users', UserViewSet)
 
 urlpatterns = [

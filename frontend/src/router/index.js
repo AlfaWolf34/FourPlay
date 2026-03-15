@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'
-import About from '../views/About.vue'
-import Contact from '../views/Contact.vue'
-import Courts from '../views/Courts.vue'
+import Home       from '../views/Home.vue'
+import Login      from '../views/Login.vue'
+import Register   from '../views/Register.vue'
+import About      from '../views/About.vue'
+import Contact    from '../views/Contact.vue'
+import Courts     from '../views/Courts.vue'
+import MyBookings from '../views/MyBookings.vue'
 
 const routes = [
   {
@@ -19,14 +20,13 @@ const routes = [
     component: Login,
     meta: { guestOnly: true }
   },
-  
   {
-  path: '/register',
-  name: 'Register',
-  component: Register,
-  meta: { guestOnly: true }
-},
-{
+    path: '/register',
+    name: 'Register',
+    component: Register,
+    meta: { guestOnly: true }
+  },
+  {
     path: '/nosotros',
     name: 'About',
     component: About
@@ -37,11 +37,17 @@ const routes = [
     component: Contact
   },
   {
-  path: '/courts/:id',
-  name: 'Courts',
-  component: Courts,
-  meta: { requiresAuth: true }
-}
+    path: '/courts/:id',
+    name: 'Courts',
+    component: Courts,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/mis-reservaciones',
+    name: 'MyBookings',
+    component: MyBookings,
+    meta: { requiresAuth: true }
+  }
 ]
 
 const router = createRouter({
