@@ -35,20 +35,11 @@ onMounted(async () => {
 
     <!-- Listado -->
     <v-row v-else>
-      <v-col
-        v-for="field in fields"
-        :key="field.id"
-        cols="12"
-        md="4"
-      >
+      <v-col v-for="field in fields" :key="field.id" cols="12" md="4">
         <v-card elevation="4" class="rounded-xl">
 
-          <v-img
-            height="220"
-            width="500"
-            :src="field.image || '/placeholder.jpg'"
-          >
-        </v-img>
+          <v-img height="220" width="500" :src="field.image || '/placeholder.jpg'">
+          </v-img>
 
           <v-card-title>
             {{ field.name }}
@@ -64,12 +55,9 @@ onMounted(async () => {
           </v-card-text>
 
           <v-card-actions>
-          <v-btn
-  color="primary"
-  :to="`/courts/${field.id}`"
->
-  Reservar
-</v-btn>
+            <v-btn color="primary" :to="`/courts/${field.id}`">
+              Reservar
+            </v-btn>
           </v-card-actions>
 
         </v-card>

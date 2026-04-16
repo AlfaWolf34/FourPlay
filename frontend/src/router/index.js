@@ -1,17 +1,26 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home       from '../views/Home.vue'
-import Login      from '../views/Login.vue'
-import Register   from '../views/Register.vue'
-import About      from '../views/About.vue'
-import Contact    from '../views/Contact.vue'
-import Courts     from '../views/Courts.vue'
+import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
+import About from '../views/About.vue'
+import Contact from '../views/Contact.vue'
+import Courts from '../views/Courts.vue'
 import MyBookings from '../views/MyBookings.vue'
+import Calendar from '../views/Calendar.vue'
+import MyBookingsFiltered from '../views/MyBookingsFiltered.vue'
+import Estadisticas from '../views/Estadisticas.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/calendario',
+    name: 'Calendar',
+    component: Calendar,
     meta: { requiresAuth: true }
   },
   {
@@ -46,6 +55,18 @@ const routes = [
     path: '/mis-reservaciones',
     name: 'MyBookings',
     component: MyBookings,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/mis-reservaciones-filtrado',
+    name: 'MyBookingsFiltered',
+    component: MyBookingsFiltered,
+    meta: { requiresAuth: true }
+  },
+  {
+    path: '/estadisticas',
+    name: 'Estadisticas',
+    component: Estadisticas,
     meta: { requiresAuth: true }
   }
 ]
