@@ -9,6 +9,11 @@ import MyBookings from '../views/MyBookings.vue'
 import Calendar from '../views/Calendar.vue'
 import MyBookingsFiltered from '../views/MyBookingsFiltered.vue'
 import Estadisticas from '../views/Estadisticas.vue'
+import api from '../services/api'
+
+const ADMIN = 1
+const OWNER = 2
+const USER = 3
 
 const routes = [
   {
@@ -21,7 +26,7 @@ const routes = [
     path: '/calendario',
     name: 'Calendar',
     component: Calendar,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, roles: [ADMIN, OWNER] }
   },
   {
     path: '/login',
@@ -67,7 +72,7 @@ const routes = [
     path: '/estadisticas',
     name: 'Estadisticas',
     component: Estadisticas,
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, roles: [ADMIN, OWNER] }
   }
 ]
 
@@ -77,20 +82,40 @@ const router = createRouter({
 })
 
 /* 🔐 Guard de navegación */
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to) => {
   const token = localStorage.getItem('token')
 
-  // 🔒 Si requiere auth y no hay token → login
+  // 🔒 No autenticado
   if (to.meta.requiresAuth && !token) {
-    return next({ name: 'Login' })
+    return { name: 'Login' }
   }
 
-  // 🚫 Si ya está logueado y quiere ir a login → home
+  // 🚫 Ya logueado
   if (to.meta.guestOnly && token) {
-    return next({ name: 'Home' })
+    return { name: 'Home' }
   }
 
-  next()
+  console.log("ROLES PERMITIDOS:", to.meta.roles)
+
+  // 🔐 Validación de roles
+  if (to.meta.roles) {
+    try {
+      const res = await api.get('users/me/')
+      const user = res.data
+      const role = Number(user.role)
+
+      console.log("ROLE:", role)
+
+      if (!to.meta.roles.includes(role)) {
+        return { name: 'Home' }
+      }
+
+    } catch (error) {
+      return { name: 'Login' }
+    }
+  }
+
+  return true
 })
 
 export default router

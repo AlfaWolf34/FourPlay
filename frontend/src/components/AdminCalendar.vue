@@ -54,6 +54,11 @@ watch(selectedFields, () => {
   loadEvents()
 })
 
+const getFieldName = (fieldId) => {
+  const field = fields.value.find(f => f.id === fieldId)
+  return field ? field.name : 'Cancha'
+}
+
 const loadEvents = () => {
   let filtered = bookings.value
 
@@ -64,7 +69,7 @@ const loadEvents = () => {
   }
 
   calendarOptions.value.events = filtered.map(b => ({
-    title: `${b.start_time?.slice(0, 5)} - ${b.field_name || 'Cancha'}`,
+    title: `${b.start_time?.slice(0, 5)} - ${getFieldName(b.field)}`,
     date: b.date,
     color: getFieldColor(b.field),
   }))

@@ -7,15 +7,23 @@ const router = useRouter()
 const user = ref(null)
 const token = ref(localStorage.getItem('token'))
 
+const ADMIN = 1
+const OWNER = 2
+const USER = 3
+
 const isAuthenticated = computed(() => {
   return !!token.value
 })
 
-const isAdmin = computed(() => {
-  const u = user.value
-  return !!u && (
-    u.username === 'admin'
-  )
+const isAdmin = computed(() => user.value?.role === ADMIN)
+
+const isOwner = computed(() => user.value?.role === OWNER)
+
+const isUser = computed(() => user.value?.role === USER)
+
+// 🔥 este es el importante
+const canViewAdminSections = computed(() => {
+  return user.value?.role === ADMIN || user.value?.role === OWNER
 })
 
 const logout = () => {
@@ -50,9 +58,9 @@ onMounted(async () => {
 
       <v-spacer></v-spacer>
 
-      <v-btn v-if="isAdmin" variant="text" to="/calendario">Calendario</v-btn>
+      <v-btn v-if="canViewAdminSections" variant="text" to="/calendario">Calendario</v-btn>
       <v-btn variant="text" to="/">Inicio</v-btn>
-      <v-btn v-if="isAdmin" variant="text" to="/estadisticas">Estadísticas</v-btn>
+      <v-btn v-if="canViewAdminSections" variant="text" to="/estadisticas">Estadísticas</v-btn>
       <v-btn variant="text" to="/mis-reservaciones">Mis Reservaciones</v-btn>
       <v-btn variant="text" to="/nosotros">Nosotros</v-btn>
       <v-btn variant="text" to="/contacto">Contacto</v-btn>

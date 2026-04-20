@@ -151,3 +151,6 @@ AUTH_USER_MODEL = 'users.User'
 # ── Zona horaria (Monterrey, NL) ─────────────────────────────────────────────
 TIME_ZONE = 'America/Monterrey'
 USE_TZ = True
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

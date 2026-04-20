@@ -6,6 +6,7 @@ const bookings = ref([])
 const loading  = ref(true)
 const cancellingId = ref(null)
 const snackbar  = ref({ show: false, text: '', color: 'success' })
+const fields = ref([])
 
 const statusConfig = {
   pending:        { label: 'Pendiente de pago', color: 'warning',  icon: 'mdi-clock-outline' },
@@ -42,10 +43,21 @@ const cancelBooking = async (booking) => {
   }
 }
 
+const getFieldName = (fieldId) => {
+  const field = fields.value.find(f => f.id === fieldId)
+  return field ? field.name : 'Cancha'
+}
+
 onMounted(async () => {
   try {
-    const res = await api.get('bookings/')
-    bookings.value = res.data
+    const [bookingsRes, fieldsRes] = await Promise.all([
+      api.get('bookings/'),
+      api.get('fields/')
+    ])
+
+    bookings.value = bookingsRes.data
+    fields.value = fieldsRes.data
+
   } catch {
     snackbar.value = { show: true, text: 'Error al cargar reservaciones.', color: 'error' }
   } finally {
@@ -121,7 +133,7 @@ onMounted(async () => {
               <div>
                 <div class="text-caption text-medium-emphasis">CANCHA</div>
                 <div class="text-body-1 font-weight-medium">
-                  {{ booking.field_name || `Cancha #${booking.field}` }}
+                  {{ getFieldName(booking.field) }}
                 </div>
               </div>
             </div>

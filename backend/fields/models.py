@@ -1,7 +1,13 @@
 from django.db import models
-
+from django.conf import settings
 
 class Field(models.Model):
+
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='fields'
+    )
 
     SPORT_CHOICES = [
         ('football', 'Fútbol'),
@@ -19,7 +25,7 @@ class Field(models.Model):
         default='football'
     )
     price_per_hour = models.DecimalField(max_digits=8, decimal_places=2)
-    image = models.URLField(blank=True)
+    image = models.ImageField(upload_to='fields/', null=True, blank=True)
     description = models.TextField(blank=True)
     is_available = models.BooleanField(default=True)
 

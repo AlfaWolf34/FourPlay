@@ -28,6 +28,15 @@
           </div>
         </v-card>
       </v-col>
+
+      <v-col cols="12" sm="3">
+        <v-card class="pa-4 text-center">
+          <div class="text-h6">Ganancias</div>
+          <div class="text-h4 font-weight-bold text-blue">
+            ${{ income.toFixed(2) }}
+          </div>
+        </v-card>
+      </v-col>
     </v-row>
 
     <v-card class="pa-4">
@@ -43,6 +52,24 @@
           :model-value="count"
           :max="maxCount"
           height="8"
+        />
+      </div>
+    </v-card>
+
+    <v-card class="pa-4">
+      <h2 class="text-h6 mb-4">Ganancias por día</h2>
+
+      <div v-for="item in chartData" :key="item.date" class="mb-2">
+        <div class="d-flex justify-space-between">
+          <span>{{ formatDate(item.date) }}</span>
+          <span>${{ item.total.toFixed(2) }}</span>
+        </div>
+
+        <v-progress-linear
+          :model-value="item.total"
+          :max="maxIncome"
+          height="8"
+          color="blue"
         />
       </div>
     </v-card>
@@ -75,6 +102,14 @@ const cancelled = computed(() =>
   bookings.value.filter(b => b.status === 'cancelled').length
 )
 
+const income = computed(() => {
+  return bookings.value
+    .filter(b => b.status === 'confirmed')
+    .reduce((total, b) => {
+      return total + Number(b.field_price || 0)
+    }, 0)
+})
+
 const bookingsByDate = computed(() => {
   const map = {}
 
@@ -86,6 +121,33 @@ const bookingsByDate = computed(() => {
   })
 
   return map
+})
+
+const incomeByDate = computed(() => {
+  const map = {}
+
+  bookings.value.forEach(b => {
+    if (b.status !== 'confirmed') return
+
+    if (!map[b.date]) {
+      map[b.date] = 0
+    }
+
+    map[b.date] += Number(b.field_price || 0)
+  })
+
+  return map
+})
+
+const chartData = computed(() => {
+  return Object.entries(incomeByDate.value).map(([date, total]) => ({
+    date,
+    total
+  }))
+})
+
+const maxIncome = computed(() => {
+  return Math.max(...chartData.value.map(i => i.total), 1)
 })
 
 const maxCount = computed(() => {

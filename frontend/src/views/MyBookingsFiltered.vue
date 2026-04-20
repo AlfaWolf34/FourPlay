@@ -9,6 +9,7 @@ const loading  = ref(true)
 const cancellingId = ref(null)
 const snackbar  = ref({ show: false, text: '', color: 'success' })
 const selectedDate = route.query.date
+const fields = ref([])
 
 const statusConfig = {
   pending:        { label: 'Pendiente de pago', color: 'warning',  icon: 'mdi-clock-outline' },
@@ -45,11 +46,21 @@ const cancelBooking = async (booking) => {
   }
 }
 
+const getFieldName = (fieldId) => {
+  const field = fields.value.find(f => f.id === fieldId)
+  return field ? field.name : 'Cancha'
+}
+
 onMounted(async () => {
   try {
-    const res = await api.get('bookings/')
+    const [bookingsRes, fieldsRes] = await Promise.all([
+      api.get('bookings/'),
+      api.get('fields/')
+    ])
 
-    bookings.value = res.data.filter(b => b.date === selectedDate)
+    fields.value = fieldsRes.data
+
+    bookings.value = bookingsRes.data.filter(b => b.date === selectedDate)
 
   } catch {
     snackbar.value = { show: true, text: 'Error al cargar reservaciones.', color: 'error' }
@@ -126,7 +137,7 @@ onMounted(async () => {
               <div>
                 <div class="text-caption text-medium-emphasis">CANCHA</div>
                 <div class="text-body-1 font-weight-medium">
-                  {{ booking.field_name || `Cancha #${booking.field}` }}
+                  {{ getFieldName(booking.field) }}
                 </div>
               </div>
             </div>
