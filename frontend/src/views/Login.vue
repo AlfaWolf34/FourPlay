@@ -24,7 +24,7 @@ const login = async () => {
     // Guardar access token
     localStorage.setItem('token', response.data.access)
     //token.value = response.data.token
-    window.dispatchEvent(new Event('auth-changed'))
+    window.dispatchEvent(new Event('login'))
 
     router.push('/')
 

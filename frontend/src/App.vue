@@ -5,15 +5,13 @@ import api from './services/api'
 
 const router = useRouter()
 const user = ref(null)
-const token = ref(localStorage.getItem('token'))
+const token = ref(null)
 
 const ADMIN = 1
 const OWNER = 2
 const USER = 3
 
-const isAuthenticated = computed(() => {
-  return !!token.value
-})
+const isAuthenticated = computed(() => !!token.value)
 
 const isAdmin = computed(() => user.value?.role === ADMIN)
 
@@ -26,6 +24,16 @@ const canViewAdminSections = computed(() => {
   return user.value?.role === ADMIN || user.value?.role === OWNER
 })
 
+const loadUser = async () => {
+  try {
+    const response = await api.get('users/me/')
+    user.value = response.data
+  } catch (error) {
+    console.error('Error obteniendo usuario:', error)
+    logout()
+  }
+}
+
 const logout = () => {
   localStorage.removeItem('token')
   token.value = null
@@ -34,14 +42,17 @@ const logout = () => {
 }
 
 onMounted(async () => {
-  if (!isAuthenticated.value) return
-
-  try {
-    const response = await api.get('users/me/')
-    user.value = response.data
-  } catch (error) {
-    console.error('Error obteniendo usuario:', error)
+  const savedToken = localStorage.getItem('token')
+  if (savedToken) {
+    token.value = savedToken
+    loadUser()
   }
+
+  // 🔥 ESCUCHAR LOGIN (SOLUCIÓN AL BUG)
+  window.addEventListener('login', () => {
+    token.value = localStorage.getItem('token')
+    loadUser()
+  })
 })
 </script>
 
