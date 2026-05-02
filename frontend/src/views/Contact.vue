@@ -21,19 +21,6 @@ const sendMessage = () => {
 <template>
   <div class="contact-page">
 
-    <!-- Ticker bar -->
-    <div class="ticker-bar">
-      <div class="ticker-left">
-        <span class="dot"></span>
-        <span>3 CANCHAS DISPONIBLES</span>
-        <span class="divider">|</span>
-        <span>MTY · DESDE $280 MXN / HR</span>
-      </div>
-      <div class="ticker-right">
-        {{ new Date().toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase() }}
-      </div>
-    </div>
-
     <!-- Main layout -->
     <div class="contact-layout">
 
