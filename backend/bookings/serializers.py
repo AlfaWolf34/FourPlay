@@ -3,7 +3,14 @@ from .models import Booking
 
 
 class BookingSerializer(serializers.ModelSerializer):
-
+    field_name = serializers.CharField(source='field.name', read_only=True)
+    field_price = serializers.DecimalField(
+        source='field.price_per_hour',
+        max_digits=10,
+        decimal_places=2,
+        read_only=True
+    )
+    
     class Meta:
         model = Booking
         fields = '__all__'

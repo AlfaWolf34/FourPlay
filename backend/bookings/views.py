@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Booking
 from .serializers import BookingSerializer
+from django.db.models import Sum
+from rest_framework.decorators import action
 
 
 class BookingViewSet(ModelViewSet):
@@ -13,8 +15,16 @@ class BookingViewSet(ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
+
+        # ADMIN ve todo
+        if user.role == 1:
             return Booking.objects.all()
+
+        # OWNER ve reservaciones de SUS canchas
+        if user.role == 2:
+            return Booking.objects.filter(field__owner=user)
+
+        # USER normal ve solo sus reservaciones
         return Booking.objects.filter(user=user)
 
     def get_serializer_context(self):
@@ -103,3 +113,26 @@ class BookingViewSet(ModelViewSet):
         booking.save()
         serializer = self.get_serializer(booking)
         return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'], url_path='stats')
+    def stats(self, request):
+        user = request.user
+
+        queryset = Booking.objects.filter(status=Booking.STATUS_CONFIRMED)
+
+        # 👇 Si es OWNER → solo sus canchas
+        if user.role == 2:
+            queryset = queryset.filter(field__owner=user)
+
+        # 👇 Ganancias totales
+        total = queryset.aggregate(
+            total_income=Sum('field__price_per_hour')
+        )['total_income'] or 0
+
+        # 👇 Total de reservaciones
+        total_bookings = queryset.count()
+
+        return Response({
+         'total_income': total,
+         'total_bookings': total_bookings
+     })
