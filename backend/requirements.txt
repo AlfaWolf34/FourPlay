@@ -1,6 +1,5 @@
-django
+Django
 djangorestframework
 django-cors-headers
-gunicorn
-pillow
 djangorestframework-simplejwt
+Pillow
