@@ -1,3 +1,4 @@
+
 <template>
 <div class="about-page">
  
@@ -94,7 +95,7 @@
     <!-- Stats bar -->
 <div class="stats-bar">
 <div class="stat-item">
-<span class="stat-number">3</span>
+<span class="stat-number">11</span>
 <span class="stat-label">CANCHAS ACTIVAS</span>
 </div>
 <div class="stat-divider"></div>

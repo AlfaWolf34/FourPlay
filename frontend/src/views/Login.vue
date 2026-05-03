@@ -87,8 +87,6 @@
             <span v-else class="spinner"></span>
           </button>
 
-          <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-
           <p class="register-link">
             ¿No tienes cuenta?
             <router-link to="/register">Regístrate</router-link>
@@ -102,7 +100,6 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import api from '../services/api'
 
 const router = useRouter()
 
@@ -110,23 +107,16 @@ const form = reactive({ username: '', password: '' })
 const focusedField = ref(null)
 const showPassword = ref(false)
 const loading = ref(false)
-const errorMessage = ref('')
 
 async function handleLogin() {
   loading.value = true
-  errorMessage.value = ''
   try {
-    const response = await api.post('token/', form)
-    const token = response.data.access
-    localStorage.setItem('token', token)
-    router.push('/')
+    // TODO: conectar con tu API de autenticación
+    // const response = await axios.post('/api/auth/login', form)
+    await new Promise(resolve => setTimeout(resolve, 800)) // simulación
+    router.push('/Home') // redirige al home después de iniciar sesión
   } catch (err) {
     console.error('Error al iniciar sesión:', err)
-    if (err.response && err.response.status === 401) {
-      errorMessage.value = 'Usuario o contraseña incorrectos'
-    } else {
-      errorMessage.value = 'Error al iniciar sesión. Inténtalo de nuevo.'
-    }
   } finally {
     loading.value = false
   }
@@ -399,15 +389,6 @@ async function handleLogin() {
 .register-link a:hover {
   text-decoration: underline;
 }
-
-/* Error message */
-.error-message {
-  color: #d32f2f;
-  font-size: 0.9rem;
-  text-align: center;
-  margin-top: 1rem;
-}
-
 
 /* ── Responsive ── */
 @media (max-width: 768px) {

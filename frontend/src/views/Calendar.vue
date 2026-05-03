@@ -1,7 +1,5 @@
 <template>
-  <v-container class="mt-8">
-    <AdminCalendar />
-  </v-container>
+  <AdminCalendar />
 </template>
 
 <script setup>

@@ -161,7 +161,7 @@ onMounted(async () => {
       </div>
       <div class="hero-title-row">
         <h1 class="hero-title">
-          Elige dónde <span class="green">jugar</span><br />hoy.
+          Elige dónde <span class="green">jugar hoy</span>
         </h1>
         <div class="hero-meta">
           {{ fields.length }} canchas · MTY
