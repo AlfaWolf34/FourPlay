@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">FourPlay</string>
+    <string name="title_activity_main">FourPlay</string>
+    <string name="package_name">com.fourplay</string>
+    <string name="custom_url_scheme">com.fourplay</string>
+</resources>
