@@ -1,0 +1,9 @@
+{
+	"appId": "com.fourplay",
+	"appName": "FourPlay",
+	"webDir": "frontend/dist",
+	"server": {
+		"androidScheme": "https",
+		"cleartext": true
+	}
+}
