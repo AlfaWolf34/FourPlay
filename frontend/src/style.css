@@ -24,8 +24,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -58,13 +56,6 @@ button:focus-visible {
   padding: 2em;
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -95,9 +86,13 @@ button:focus-visible {
   padding: 0 !important;
 }
 
-html, body, #app {
+
+html, body {
+  overflow-x: hidden;
+}
+
+#app {
+  width: 100%;
   margin: 0;
   padding: 0;
-  width: 100%;
-  height: 100%;
 }
